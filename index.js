@@ -4,7 +4,7 @@ const fs     = require('fs');
 
 const cwd = process.cwd();
 
-module.exports = parser => {
+module.exports = server => {
 
   const _export = (content, file) => {
     const view = file.substr(cwd.length + 1).substr(6).split('/').shift();
@@ -26,7 +26,7 @@ module.exports = parser => {
       }
 
       const parsed_url = path.parse(url);
-      const { ext } = parser.determine_parser(parsed_url.ext);
+      const { ext } = server.parser(parsed_url.ext);
 
       if (ext === null) {
         return url;
