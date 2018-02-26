@@ -40,7 +40,8 @@ module.exports = parser => {
 
       try {
         for (let child of root.childNodes) {
-          if (child.tagName === 'script') {
+
+          if (child.tagName === 'img' || child.tagName === 'script') {
             for (let attr of child.attrs) {
               if (attr.name === 'src') {
                 attr.value = source(attr.value);
@@ -48,23 +49,7 @@ module.exports = parser => {
             }
           }
 
-          if (child.tagName === 'link') {
-            for (let attr of child.attrs) {
-              if (attr.name === 'href') {
-                attr.value = source(attr.value);
-              }
-            }
-          }
-
-          if (child.tagName === 'img') {
-            for (let attr of child.attrs) {
-              if (attr.name === 'src') {
-                attr.value = source(attr.value);
-              }
-            }
-          }
-
-          if (child.tagName === 'a') {
+          if (child.tagName === 'link' || child.tagName === 'a') {
             for (let attr of child.attrs) {
               if (attr.name === 'href') {
                 attr.value = source(attr.value);
