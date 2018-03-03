@@ -1,6 +1,6 @@
 const parse5 = require('parse5');
 const path   = require('path');
-const fs     = require('fs');
+const fs     = require('fs-extra');
 
 const cwd = process.cwd();
 
@@ -66,21 +66,16 @@ module.exports = server => {
       return root;
     };
 
-    return parse5.serialize(dfs(document));
+    return parse5.serialize(dfs(document)) + '\n'
   }
 
-  const parse = (file, next, exp) => {
-    return fs.readFile(file, function (err, buf) {
-      const ext = '.' + file.split('.').slice(-1)[0];
+  const parse = async (file, exporting = false) => {
+    const buf = await fs.readFile(file)
+    const ext = '.' + file.split('.').slice(-1)[0]
 
-      if (exp && !err) {
-        return next(null, _export(`${buf}`, file));
-      }
-
-      return next(err, buf);
-    });
+    if (exporting) return { content: _export(`${buf}`, file), ext }
+    return { content: buf, ext }
   }
-
 
   return { parse, ext: '.html', _export };
 }
