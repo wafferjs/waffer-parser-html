@@ -6,9 +6,9 @@ const cwd = process.cwd();
 
 module.exports = server => {
 
-  const _export = (content, file) => {
+  const _export = (content, file, options = {}) => {
     const view = file.substr(cwd.length + 1).substr(6).split('/').shift();
-    const document = parse5.parse(content, { locationInfo: false });
+    const document = parse5[options.fragment ? 'parseFragment' : 'parse'](content, { locationInfo: false });
 
     const source = url => {
       if (url.startsWith('http')) return url;
@@ -66,7 +66,7 @@ module.exports = server => {
       return root;
     };
 
-    return parse5.serialize(dfs(document)) + '\n'
+    return parse5.serialize(dfs(document))
   }
 
   const parse = async (file, exporting = false) => {
